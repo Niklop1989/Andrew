@@ -1,0 +1,67 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Каталог спортивных товаров</title>
+  <!-- Исправлен разрыв строки в пути к стилям -->
+  <link rel="stylesheet" href="{% static 'shopapp/css/products_list_style.css' %}" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>Спортивные товары</h1>
+
+    <div class="product-grid">
+      {% for product in products1 %}
+      <div class="product-card">
+        <!-- Отображаем бэдж, если он задан у товара (например, 'Sale' или 'New') -->
+        {% if product.badge %}
+        <span class="badge">{{ product.badge }}</span>
+        {% endif %}
+
+        <div class="product-image">
+          <!-- Проверяем, загружено ли изображение, иначе ставим заглушку -->
+          {% if product.image %}
+          <img src="{{ product.image.url }}" alt="{{ product.title }}" />
+          {% else %}
+          <img src="{% static 'shopapp/images/no-image.png' %}" alt="Нет фото" />
+          {% endif %}
+        </div>
+
+        <div class="product-info">
+          <!-- Категория товара -->
+          <span class="product-category">{{ product.category.name }}</span>
+
+          <!-- Название товара -->
+          <h2 class="product-title">{{ product.name }}</h2>
+          <div>
+            <p class="discount">
+              discount {% firstof product.discount 'no discount' %}
+            </p>
+
+          </div>
+
+          <div class="product-price-box">
+            <!-- Актуальная цена -->
+            <span class="product-price">{{ product.discount_price }} ₽</span>
+            <!-- Старая цена отображается, только если она заполнена -->
+            {% if product.price %}
+            <span class="product-price-old">{{ product.price }} ₽</span>
+            {% endif %}
+          </div>
+
+          <button class="add-to-cart-btn">В корзину</button>
+        </div>
+      </div>
+      {% empty %}
+      <!-- Выводится, если список товаров из базы данных пуст -->
+      <p>Товары не найдены.</p>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+
+</html>

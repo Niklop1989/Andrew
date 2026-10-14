@@ -1,0 +1,228 @@
+/* Общие стили и сброс */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    line-height: 1.5;
+    padding: 20px;
+}
+
+.orders-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.page-title {
+    margin-bottom: 24px;
+    font-size: 2rem;
+    color: #1a1a1a;
+}
+
+/* Список карточек заказов */
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Карточка заказа */
+.order-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e1e4e8;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Верхняя панель карточки */
+.order-header {
+    background-color: #fafbfc;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e1e4e8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.order-meta {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.order-id {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #0366d6;
+}
+
+.order-date {
+    color: #6a737d;
+    font-size: 0.9rem;
+}
+
+.order-user {
+    font-size: 0.95rem;
+    color: #444;
+}
+
+/* Тело карточки */
+.order-body {
+    padding: 20px;
+    flex-grow: 1;
+}
+
+.section-title {
+    font-size: 1rem;
+    color: #6a737d;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Список товаров внутри заказа */
+.order-items-list {
+    list-style: none;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed #e1e4e8;
+    padding-bottom: 15px;
+}
+
+.order-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    padding: 10px 0;
+    border-bottom: 1px solid #f6f8fa;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.item-name {
+    font-weight: 500;
+}
+
+.item-quantity {
+    color: #6a737d;
+    text-align: center;
+}
+
+.item-price {
+    color: #6a737d;
+    text-align: right;
+}
+
+.item-total {
+    font-weight: 600;
+    text-align: right;
+    color: #24292e;
+}
+
+/* Детали: адрес и промокод */
+.order-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detail-group {
+    font-size: 0.9rem;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #6a737d;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.detail-value {
+    color: #24292e;
+}
+
+.promo-tag {
+    display: inline-block;
+    background-color: #e6ffed;
+    color: #22863a;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    border: 1px solid #acf2bd;
+}
+
+/* Нижняя панель с итогом */
+.order-footer {
+    background-color: #fafbfc;
+    padding: 16px 20px;
+    border-top: 1px solid #e1e4e8;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.order-total-price {
+    font-size: 1.1rem;
+    color: #24292e;
+}
+
+.order-total-price span {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #2ea44f;
+    margin-left: 8px;
+}
+
+/* Заглушка при отсутствии заказов */
+.no-orders {
+    background: white;
+    padding: 40px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    color: #6a737d;
+}
+
+/* Адаптивность для мобильных устройств (экраны менее 768px) */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    /* Превращаем сетку товаров во флекс-блоки для мобильных */
+    .order-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        position: relative;
+        padding: 12px 0;
+    }
+
+    .item-quantity, .item-price {
+        text-align: left;
+        font-size: 0.85rem;
+    }
+
+    /* Сумму за товар сдвигаем в правый нижний угол или показываем явно */
+    .item-total {
+        align-self: flex-end;
+        margin-top: -20px;
+    }
+}
