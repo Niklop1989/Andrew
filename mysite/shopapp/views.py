@@ -16,7 +16,7 @@ from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin,
                                         UserPassesTestMixin)
 from .forms import GroupForm
-from .models import Product,Order
+from .models import Product,Order,OrderItem
 
 # Create your views here.
 def shop_index(request:HttpRequest):
@@ -70,25 +70,41 @@ class ProfuctListView(ListView):
 ######################################################################################
 #   ORDERS
 #################################################################################
-class OrderListView(LoginRequiredMixin,ListView):
+from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Order
+
+#class OrderListView(LoginRequiredMixin, ListView):
+    #model = Order
+    #template_name = 'shopapp/orders-list.html'  # Путь к вашему шаблону списка заказов
+    #context_object_name = 'orders'            # Имя переменной со списком заказов в шаблоне
+    #ordering = ['-created_at']                # Сортировка: сначала новые заказы
+
+    #def get_queryset(self):
+        #user = self.request.user
+        #queryset = super().get_queryset()
+
+        # 1. Если пользователь — админ или менеджер (is_staff), отдаем вообще ВСЕ заказы.
+        # 2. Если обычный пользователь — фильтруем только по его заказам.
+        #if not user.is_staff:
+         #   queryset = queryset.filter(user=user)
+
+        # Обязательно оставляем prefetch_related для защиты от N+1 запросов к БД
+        #return queryset.prefetch_related('items__product')
+
+
+class OrderListView(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'shopapp/orders-list.html'
-    #queryset = (
-    #   Order.objects.select_related("user")
-    #    .prefetch_related('products')
-    #)
-    
     context_object_name = 'orders'
-    paginate_by = 10  # Показывать по 10 заказов на одной странице
+    ordering = ['-created_at']
 
     def get_queryset(self):
-        """Возвращает только заказы текущего авторизованного пользователя."""
-        # Используем prefetch_related, чтобы оптимизировать запросы к БД (избежать проблемы N+1)
-        # и сразу подгрузить связанные позиции и товары одной выборкой.
+        # 1. Фильтруем заказы: показываем только заказы текущего пользователя
+        # 2. prefetch_related('items__product') подтягивает все OrderItem и связанные Product 
+        #    за один дополнительный запрос, чтобы база данных не "ложилась" от нагрузки
         return (
             Order.objects.filter(user=self.request.user)
             .prefetch_related('items__product')
-            .order_by('-created_at')  # Сначала новые заказы
+            .order_by('-created_at')
         )
-
-    

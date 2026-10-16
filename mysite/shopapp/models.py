@@ -115,7 +115,14 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    price_at_order = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена на момент заказа")
+    # Добавляем null=True и blank=True, чтобы Django разрешал создавать объект без цены до сохранения
+    price_at_order = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        verbose_name="Цена на момент заказа",
+        null=True, 
+        blank=True
+    )
     quantity = models.PositiveIntegerField(default=1, verbose_name="Количество")
 
     @property
@@ -124,7 +131,7 @@ class OrderItem(models.Model):
 
     def save(self, *args, **kwargs):
         # Автоматически фиксируем цену товара со скидкой при сохранении записи
-        if not self.price_at_order:
+        if not self.price_at_order or self.price_at_order is None:
             self.price_at_order = self.product.discount_price
         super().save(*args, **kwargs)
 

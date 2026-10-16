@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "shopapp.apps.ShopappConfig",
+    "requestdataapp.apps.RequestdataappConfig",
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    "requestdataapp.middlewares.set_useragent_on_request_middleware",
+    "requestdataapp.middlewares.CountRequestMiddlewarw",
 ]
 
 ROOT_URLCONF = "mysite.urls"
@@ -84,9 +88,9 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'insure',
-        'USER': 'insure',
-        'PASSWORD': 'insure',
+        'NAME': 'insures',
+        'USER': 'insures',
+        'PASSWORD': 'insures',
         'HOST': 'localhost',
         'PORT': '5432',
     }
