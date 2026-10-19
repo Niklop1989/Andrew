@@ -10,6 +10,7 @@
   </head>
   <body>
     <!-- Шапка сайта -->
+    <a href="{% url 'myauth:logout' %}" class="btn btn-secondary">EXIT</a>
     <header class="header">
       <div class="container header__container">
         <a href="#" class="logo">Sport<span>Fit</span></a>
@@ -34,7 +35,9 @@
         <p class="hero__subtitle">
           Качественная экипировка, тренажёры и инвентарь по выгодным ценам.
         </p>
-        <a href="#catalog" class="btn btn--primary">Перейти в каталог</a>
+        <a href="{% url 'shopapp:products_list_url' %}" class="btn btn--primary"
+          >Перейти в каталог</a
+        >
       </div>
     </section>
 

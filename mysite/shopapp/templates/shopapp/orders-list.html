@@ -23,7 +23,13 @@
           <!-- Заголовок заказа -->
           <div class="order-header">
             <div class="order-meta">
-              <span class="order-id">Заказ №{{ order.pk }}</span>
+              <a
+                class="order-id"
+                href="{% url 'shopapp:order_details_url' pk=order.pk %}"
+                class="btn btn-secondary"
+                >Заказ № {{ order.pk }}</a
+              >
+
               <span class="order-date"
                 >{{ order.created_at|date:"d.m.Y H:i" }}</span
               >
@@ -39,6 +45,12 @@
             <ul class="order-items-list">
               {% for item in order.items.all %}
               <li class="order-item">
+                <a
+                  href="{% url 'shopapp:order_details_url' pk=order.pk %}"
+                  class="btn btn-secondary"
+                  >{{ item.product.name }}</a
+                >
+
                 <span class="item-name">{{ item.product.name }}</span>
                 <span class="item-quantity">{{ item.quantity }} шт.</span>
                 <span class="item-price">{{ item.price_at_order }} ₽</span>
@@ -81,6 +93,11 @@
         <p>Заказов пока нет.</p>
       </div>
       {% endif %}
+      <div class="product-actions" style="margin-top: 1.5rem">
+        <a href="{% url 'shopapp:order_create_url' %}" class="btn btn-secondary"
+          >Order create</a
+        >
+      </div>
     </div>
   </body>
 </html>

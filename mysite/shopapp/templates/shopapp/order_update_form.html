@@ -1,0 +1,63 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Product</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'shopapp/css/update_product.css' %}"
+    />
+  </head>
+
+  <body>
+    <div class="product-update-container">
+      <header class="product-update-header">
+        <h1>Update product</h1>
+      </header>
+
+      <div class="product-update-card">
+        <form method="post" class="product-form">
+          {% csrf_token %}
+          <div class="form-fields">{{ form.as_p }}</div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-submit">Save changes</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="product-actions">
+        <a
+          href="{% url 'shopapp:order_details_url'  pk=order_upd.pk %}"
+          class="btn btn-secondary"
+        >
+          Cancel
+        </a>
+        <a href="{% url 'shopapp:orders_list_url' %}" class="btn btn-link">
+          Back to list
+        </a>
+      </div>
+
+      {% if request.POST %}
+      <div class="previous-data-card">
+        <h2>Submitted changes</h2>
+        <table class="data-table">
+          <tr>
+            <th>Full name:</th>
+            <td>{{ request.POST.name }}</td>
+          </tr>
+          <tr>
+            <th>Price:</th>
+            <td>{{ request.POST.price }}</td>
+          </tr>
+          <tr>
+            <th>Description:</th>
+            <td>{{ request.POST.description|linebreaks }}</td>
+          </tr>
+        </table>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>

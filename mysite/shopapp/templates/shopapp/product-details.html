@@ -1,0 +1,62 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ product.name }} — Купить</title>
+    <!-- Подключение адаптивного CSS-файла из static-директории -->
+    <link
+      rel="stylesheet"
+      href="{% static 'shopapp/css/product_detail.css' %}"
+    />
+  </head>
+
+  <body>
+    <main class="container">
+      <!-- Кнопка возврата к списку товаров -->
+      <a href="{% url 'shopapp:products_list_url' %}" class="back-link"
+        >← Назад к каталогу</a
+      >
+
+      <div class="product-card">
+        <a
+          href="{% url 'shopapp:product_update_url'  pk=product.pk %}"
+          class="btn btn-secondary"
+        >
+          Update
+        </a>
+        <!-- Блок с изображением -->
+        <div class="product-image">
+          {% if product.image %}
+          <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+          {% else %}
+          <img
+            src="{% static 'images/no-image.png' %}"
+            alt="Изображение отсутствует"
+          />
+          {% endif %}
+        </div>
+
+        <!-- Блок с информацией о товаре -->
+        <div class="product-info">
+          <span class="category">{{ product.category.name }}</span>
+          <h1 class="title">{{ product.name }}</h1>
+
+          <div class="price-container">
+            <span class="current-price">{{ product.price }} ₽</span>
+            <span class="old-price">скидка{{ product.discount }} %</span>
+            <span class="current-price">{{ product.discount_price }} ₽</span>
+          </div>
+          <p class="description">{{ product.description|linebreaksbr }}</p>
+          <a
+            href="{% url 'shopapp:product_delete_url'  pk=product.pk %}"
+            class="btn btn-secondary"
+          >
+            Delete
+          </a>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

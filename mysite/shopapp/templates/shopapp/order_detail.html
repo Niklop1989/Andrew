@@ -1,0 +1,115 @@
+{% load static %}
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Заказ №{{ order.id }} — Детали</title>
+    <link rel="stylesheet" href="{% static 'shopapp/css/order_detail.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Шапка страницы -->
+      <header class="order-header">
+        <div class="order-title">
+          <!-- order.id и order.created_at берутся из предположительной модели Order -->
+          <h1>Заказ №{{ order.id }}</h1>
+          <div class="order-date">
+            Оформлен: {{ order.created_at|date:"d.m.Y в H:i" }}
+          </div>
+        </div>
+        <!-- Статус заказа -->
+        <span class="status-badge">Оплачен</span>
+      </header>
+
+      <!-- Основная сетка -->
+      <div class="order-grid">
+        <!-- Левая колонка: Список товаров -->
+        <main class="card">
+          <h2 class="card-title">Содержимое заказа</h2>
+          <div class="products-list">
+            {% for item in order.items.all %}
+            <div class="product-item">
+              <div class="product-info">
+                <!-- Название товара -->
+                <div class="product-name">{{ item.product.name }}</div>
+
+                <!-- Категория товара -->
+                {% if item.product.category %}
+                <span class="product-category"
+                  >{{ item.product.category.name }}</span
+                >
+                {% endif %}
+
+                <!-- Количество -->
+                <div class="product-meta">
+                  Количество: <strong>{{ item.quantity }} шт.</strong>
+                </div>
+              </div>
+
+              <!-- Цена и скидки -->
+              <div class="product-pricing">
+                {% if item.product.discount > 0 %}
+                <div class="price-original">{{ item.product.price }} ₽</div>
+                <span class="discount-badge"
+                  >-{{ item.product.discount }}%</span
+                >
+                {% endif %}
+                <!-- Предполагается, что итоговая цена за единицу или позицию считается в context/property -->
+                <div class="price-current">{{ item.price_at_purchase }} ₽</div>
+              </div>
+            </div>
+            {% empty %}
+            <p>В этом заказе нет товаров.</p>
+            {% endfor %}
+          </div>
+        </main>
+
+        <!-- Правая колонка: Сводка и данные покупателя -->
+        <aside class="summary-box">
+          <!-- Информация о покупателе -->
+          <div class="card">
+            <h2 class="card-title">Покупатель</h2>
+            <div class="info-row">
+              <span class="info-label">Пользователь:</span>
+              <span class="info-value">{{ order.user.username }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Email:</span>
+              <span class="info-value">{{ order.user.email }}</span>
+            </div>
+          </div>
+
+          <!-- Итоги заказа -->
+          <div class="card">
+            <h2 class="card-title">Итог заказа</h2>
+            <div class="info-row">
+              <span class="info-label">Позиций:</span>
+              <span class="info-value">{{ order.items.count }}</span>
+            </div>
+            <!-- Общая стоимость заказа -->
+            <div class="info-row total">
+              <span class="info-label">Итого:</span>
+              <span class="info-value">{{ order.total_price }} ₽</span>
+            </div>
+
+            <a href="{% url 'shopapp:orders_list_url' %}" class="btn-back"
+              >Вернуться к заказам</a
+            >
+            <a
+              href="{% url 'shopapp:order_delete_url' pk=order.pk%}"
+              class="btn-back"
+              >Удалить заказ</a
+            >
+            <a
+              href="{% url 'shopapp:order_update_url' pk=order.pk%}"
+              class="btn-back"
+              >Изменить заказ</a
+            >
+          </div>
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>

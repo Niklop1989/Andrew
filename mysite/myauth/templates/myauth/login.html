@@ -1,0 +1,41 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Вход в систему</title>
+    <link rel="stylesheet" href="{% static 'myauth/css/login.css' %}" />
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-card">
+        <div class="login-header">
+          <h2>С возвращением!</h2>
+          <p>Пожалуйста, войдите в свой аккаунт</p>
+        </div>
+
+        {% if form.errors %}
+        <div class="alert-error">
+          Неверное имя пользователя или пароль. Попробуйте еще раз.
+        </div>
+        {% endif %}
+        <div class="form-group">
+        <form method="post" action="" class="login-form">
+          {% csrf_token %} {{ form.as_p }}
+          </div>
+
+          <div class="form-actions">
+            <a href="#" class="forgot-password">Забыли пароль?</a>
+          </div>
+
+          <button type="submit" class="btn-submit">Войти</button>
+        </form>
+
+        <div class="login-footer">
+          <p>Нет аккаунта? <a href="#">Зарегистрироваться</a></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

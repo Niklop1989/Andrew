@@ -1,0 +1,48 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Удаление продукта</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'shopapp/css/delete_product.css' %}"
+    />
+  </head>
+  <body>
+    <div class="modal-backdrop">
+      <div class="delete-modal">
+        <!-- Иконка предупреждения -->
+        <div class="modal-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
+            <path
+              d="M19 7L18.1327 19.1425C18.0579 20.1891 17.187 21 16.1378 21H7.86224C6.81296 21 5.94208 20.1891 5.86732 19.1425L5 7M10 11V17M14 11V17M15 7V4C15 3.44772 14.5523 3 14 3H10C9.44772 3 9 3.44772 9 4V7M4 7H20"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <!-- Текстовый блок -->
+        <h2 class="modal-title">Удалить этот order?</h2>
+        <p class="modal-text">
+          Вы собираетесь удалить <strong>{{order.name}}</strong>. Это действие
+          нельзя будет отменить.
+        </p>
+
+        <!-- Кнопки управления -->
+        <div class="modal-actions">
+          <form method="post">
+            {%csrf_token %} {{form.as_p}}
+            <button class="btn btn-cancel">Отмена</button>
+            <button class="btn btn-delete">Удалить</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+ы

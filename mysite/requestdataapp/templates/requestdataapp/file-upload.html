@@ -1,16 +1,32 @@
-{% extends "requestdataapp/base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
 
-{% block title %}
-file upload
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Загрузка файла</title>
+    <!-- Подключение стилей (замените путь, если используете статику Django) -->
+    <link rel="stylesheet" href="{% static 'requestdataapp/css/upload.css' %}" />
 
-{% block body %}
-<h1>
-    Upload file
-</h1>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Upload</button>
-</form>
-{% endblock %}
+</head>
+
+<body>
+
+    <div class="form-container">
+        <h2>Загрузка документа</h2>
+
+        <form method="post" enctype="multipart/form-data" class="responsive-form">
+            {% csrf_token %}
+
+            <div class="form-fields">
+                {{ form.as_p }}
+            </div>
+
+            <button type="submit" class="btn-submit">Загрузить файл</button>
+        </form>
+    </div>
+
+</body>
+
+</html>

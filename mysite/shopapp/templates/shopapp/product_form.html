@@ -1,0 +1,64 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'shopapp/css/create_product.css' %}"
+    />
+  </head>
+
+  <body>
+    <div class="product-create-container">
+      <header class="product-create-header">
+        <h1>Create a new product</h1>
+      </header>
+
+      <div class="product-create-card">
+        <form method="post" class="product-form">
+          {% csrf_token %}
+          <div class="form-fields">{{ form.as_p }}</div>
+          <button type="submit" class="btn btn-submit">Create</button>
+        </form>
+      </div>
+
+      <div class="product-actions">
+        <a
+          href="{% url 'shopapp:products_list_url' %}"
+          class="btn btn-secondary"
+          >Products list</a
+        >
+      </div>
+
+      {% if request.POST %}
+      <div class="previous-data-card">
+        <h2>Previous form data</h2>
+        <table class="data-table">
+          <tr>
+            <th>Full name:</th>
+            <td>{{ request.POST.name }}</td>
+          </tr>
+          <tr>
+            <th>Price:</th>
+            <td>{{ request.POST.price }}</td>
+          </tr>
+          <tr>
+            <th>Description:</th>
+            <td>{{ request.POST.description|linebreaks }}</td>
+          </tr>
+        </table>
+        <div class="product-actions" style="margin-top: 1.5rem">
+          <a
+            href="{% url 'shopapp:products_list_url' %}"
+            class="btn btn-secondary"
+            >Products list</a
+          >
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>

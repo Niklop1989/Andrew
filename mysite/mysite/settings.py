@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     "shopapp.apps.ShopappConfig",
     "requestdataapp.apps.RequestdataappConfig",
+    "myauth.apps.MyauthConfig",
 ]
 
 MIDDLEWARE = [
@@ -88,9 +89,9 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'insures',
-        'USER': 'insures',
-        'PASSWORD': 'insures',
+        'NAME': 'insure',
+        'USER': 'insure',
+        'PASSWORD': 'insure',
         'HOST': 'localhost',
         'PORT': '5432',
     }

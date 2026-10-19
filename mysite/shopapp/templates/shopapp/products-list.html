@@ -41,7 +41,11 @@
             <span class="product-category">{{ product.category.name }}</span>
 
             <!-- Название товара -->
-            <h2 class="product-title">{{ product.name }}</h2>
+            <a
+              href="{% url 'shopapp:product_details_url'  pk=product.pk %}"
+              class="product-title"
+              >{{product.name}}</a
+            >
             <div>
               <p class="discount">
                 discount {% firstof product.discount 'no discount' %}
@@ -66,6 +70,16 @@
         <p>Товары не найдены.</p>
         {% endfor %}
       </div>
+    </div>
+    <div class="product-actions" style="margin-top: 1.5rem">
+      <a href="{% url 'shopapp:product_create_url' %}" class="btn btn-secondary"
+        >Create product</a
+      >
+    </div>
+    <div class="product-actions" style="margin-top: 1.5rem">
+      <a href="{% url 'shopapp:orders_list_url' %}" class="btn btn-secondary"
+        >Orders</a
+      >
     </div>
   </body>
 </html>
