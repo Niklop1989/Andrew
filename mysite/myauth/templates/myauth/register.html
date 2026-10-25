@@ -1,17 +1,20 @@
-{% extends "myauth/base.html" %}
+{% load static %}
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Регистрация профиля</title>
+    <link rel="stylesheet" href="{% static 'myauth/css/register.css' %}" />
+  </head>
+  <body>
+    <div class="form-container">
+      <h2>Регистрация профиля</h2>
 
-
-{% block title %}
-Register
-{% endblock title %}
-
-
-{% block body %}
-<h1>Register</h1>
-<form method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="Register">
-</form>
-
-{% endblock body %}
+      <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %} {{form.as_p}}
+        <input class="btn-submit" type="submit" value="Register" />
+      </form>
+    </div>
+  </body>
+</html>

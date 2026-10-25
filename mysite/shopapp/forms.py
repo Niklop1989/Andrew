@@ -38,9 +38,9 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         model =Product
-        fields = 'name','price','description','discount','category'
+        fields = 'name','price','description','discount','category','created_by','prewiew'
 
-    #images = MultipleFileField(required=False,Slabel='images')
+    images = MultipleFileField(required=False,label='images')
         
 class OrderForm(forms.ModelForm):
     class Meta:

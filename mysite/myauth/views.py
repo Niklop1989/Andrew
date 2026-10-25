@@ -89,7 +89,7 @@ class RegisterView(CreateView):
     # для того чтобы переходить в about-me
     def form_valid(self, form):
         response = super().form_valid(form)
-        Profile.objects.create(user=self.object)
+        Profile.objects.create(user=self.object)# after migrations
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password1')
         user = authenticate(self.request,

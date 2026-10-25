@@ -140,6 +140,8 @@ STATICFILES_DIRS = [
 
 # Папка, куда команда collectstatic будет собирать всю статику для продакшена:
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'uploads'
 
 
 # Email
@@ -150,3 +152,9 @@ MAILERS = {
         "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
 }
+from django.urls import reverse,reverse_lazy
+#LOGIN_REDIRECT_URL = '/shop/'
+LOGIN_REDIRECT_URL = reverse_lazy("myauth:about_me_url")
+
+LOGOUT_REDIRECT_URL = '/login/'
+LOGIN_URL = reverse_lazy("myauth:login")

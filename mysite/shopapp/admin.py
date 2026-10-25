@@ -11,7 +11,7 @@ from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import path
-from .models import Product,Category,Order
+from .models import Product,Category,Order,ProductImage
 
 
 
@@ -30,6 +30,9 @@ def mark_archived(modeladmin: admin.ModelAdmin,request:HttpRequest,queryset:Quer
 def mark_unarchived(modeladmin: admin.ModelAdmin,request:HttpRequest,queryset:QuerySet):
     queryset.update(archived=False)
 
+class ProductInlineImages(admin.StackedInline):
+    model = ProductImage
+
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin,ExportAsCSVMixin):
@@ -39,7 +42,10 @@ class ProductAdmin(admin.ModelAdmin,ExportAsCSVMixin):
         mark_unarchived,
         "export_csv"
     ]
-
+    inlines = [
+        OrderInline,
+        ProductInlineImages,
+    ]
     #list_display = "pk",'name','price','discount','description'
     list_display = "pk",'name','category','price','discount','description_short','discount_price','archived'
     list_display_links = 'pk','name'
@@ -54,7 +60,9 @@ class ProductAdmin(admin.ModelAdmin,ExportAsCSVMixin):
             'fields':('price','discount'),
             'classes':('collapse','wide'),
         }),
-
+        ('Images',{
+            'fields':('prewiew',),
+        }),
         ('Extra options',{
             'fields':('archived',),
             'classes':('collapse',),

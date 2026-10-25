@@ -2,111 +2,118 @@
 <link rel="stylesheet" href="{% static 'shopapp/css/style.css' %}" />
 <!doctype html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SportFit — Магазин спортивных товаров</title>
-    <link rel="stylesheet" href="{% static 'shopapp/css/style.css' %}" />
-  </head>
-  <body>
-    <!-- Шапка сайта -->
-    <a href="{% url 'myauth:logout' %}" class="btn btn-secondary">EXIT</a>
-    <header class="header">
-      <div class="container header__container">
-        <a href="#" class="logo">Sport<span>Fit</span></a>
-        <nav class="nav">
-          <ul class="nav__list">
-            <li><a href="#catalog" class="nav__link">Каталог</a></li>
-            <li><a href="#about" class="nav__link">О нас</a></li>
-            <li><a href="#delivery" class="nav__link">Доставка</a></li>
-            <li><a href="#contacts" class="nav__link">Контакты</a></li>
-          </ul>
-        </nav>
-        <div class="header__actions">
-          <button class="btn btn--cart">Корзина (0)</button>
-        </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SportFit — Магазин спортивных товаров</title>
+  <link rel="stylesheet" href="{% static 'shopapp/css/style.css' %}" />
+</head>
+
+<body>
+  <!-- Шапка сайта -->
+  <div class="auth-buttons">
+    {% if not user.is_authenticated %}
+    <a href="{% url 'myauth:login' %}" class="btn btn-logout">Вход</a>
+    {%else%}
+    <a href="{% url 'myauth:logout' %}" class="btn btn-login">Выход</a>
+    {%endif%}
+  </div>
+  <header class="header">
+    <div class="container header__container">
+      <a href="#" class="logo">Sport<span>Fit</span></a>
+      <nav class="nav">
+        <ul class="nav__list">
+          <li><a href="#catalog" class="nav__link">Каталог</a></li>
+          <li><a href="#about" class="nav__link">О нас</a></li>
+          <li><a href="#delivery" class="nav__link">Доставка</a></li>
+          <li><a href="#contacts" class="nav__link">Контакты</a></li>
+        </ul>
+      </nav>
+      <div class="header__actions">
+        <button class="btn btn--cart">Корзина (0)</button>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <!-- Главный баннер -->
-    <section class="hero">
-      <div class="container hero__content">
-        <h1 class="hero__title">Всё для твоего спорта и рекордов</h1>
-        <p class="hero__subtitle">
-          Качественная экипировка, тренажёры и инвентарь по выгодным ценам.
-        </p>
-        <a href="{% url 'shopapp:products_list_url' %}" class="btn btn--primary"
-          >Перейти в каталог</a
-        >
+  <!-- Главный баннер -->
+  <section class="hero">
+    <div class="container hero__content">
+      <h1 class="hero__title">Всё для твоего спорта и рекордов</h1>
+      <p class="hero__subtitle">
+        Качественная экипировка, тренажёры и инвентарь по выгодным ценам.
+      </p>
+      <a href="{% url 'shopapp:products_list_url' %}" class="btn btn--primary">Перейти в каталог</a>
+    </div>
+  </section>
+
+  <!-- Каталог товаров -->
+  <section class="catalog" id="catalog">
+    <div class="container">
+      <h2 class="section-title">Популярные товары</h2>
+
+      <div class="product-grid">
+        <!-- Карточка товара 1 -->
+        <article class="product-card">
+          <div class="product-card__image">
+            <span class="badge">Хит</span>
+            <img src="https://unsplash.com" alt="Гантели разборные" />
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__title">Гантели разборные 2х10 кг</h3>
+            <p class="product-card__price">4 500 ₽</p>
+            <button class="btn btn--buy">В корзину</button>
+          </div>
+        </article>
+
+        <!-- Карточка товара 2 -->
+        <article class="product-card">
+          <div class="product-card__image">
+            <img src="https://unsplash.com" alt="Беговая дорожка" />
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__title">Беговая дорожка домашняя</h3>
+            <p class="product-card__price">34 900 ₽</p>
+            <button class="btn btn--buy">В корзину</button>
+          </div>
+        </article>
+
+        <!-- Карточка товара 3 -->
+        <article class="product-card">
+          <div class="product-card__image">
+            <span class="badge badge--sale">-15%</span>
+            <img src="https://unsplash.com" alt="Йога-мат" />
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__title">Коврик для фитнеса и йоги</h3>
+            <p class="product-card__price">1 200 ₽</p>
+            <button class="btn btn--buy">В корзину</button>
+          </div>
+        </article>
+
+        <!-- Карточка товара 4 -->
+        <article class="product-card">
+          <div class="product-card__image">
+            <img src="https://unsplash.com" alt="Скакалка" />
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__title">
+              Скакалка скоростная с подшипником
+            </h3>
+            <p class="product-card__price">650 ₽</p>
+            <button class="btn btn--buy">В корзину</button>
+          </div>
+        </article>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Каталог товаров -->
-    <section class="catalog" id="catalog">
-      <div class="container">
-        <h2 class="section-title">Популярные товары</h2>
+  <!-- Подвал -->
+  <footer class="footer">
+    <div class="container footer__container">
+      <p>&copy; 2026 SportFit. Все права защищены.</p>
+    </div>
+  </footer>
+</body>
 
-        <div class="product-grid">
-          <!-- Карточка товара 1 -->
-          <article class="product-card">
-            <div class="product-card__image">
-              <span class="badge">Хит</span>
-              <img src="https://unsplash.com" alt="Гантели разборные" />
-            </div>
-            <div class="product-card__body">
-              <h3 class="product-card__title">Гантели разборные 2х10 кг</h3>
-              <p class="product-card__price">4 500 ₽</p>
-              <button class="btn btn--buy">В корзину</button>
-            </div>
-          </article>
-
-          <!-- Карточка товара 2 -->
-          <article class="product-card">
-            <div class="product-card__image">
-              <img src="https://unsplash.com" alt="Беговая дорожка" />
-            </div>
-            <div class="product-card__body">
-              <h3 class="product-card__title">Беговая дорожка домашняя</h3>
-              <p class="product-card__price">34 900 ₽</p>
-              <button class="btn btn--buy">В корзину</button>
-            </div>
-          </article>
-
-          <!-- Карточка товара 3 -->
-          <article class="product-card">
-            <div class="product-card__image">
-              <span class="badge badge--sale">-15%</span>
-              <img src="https://unsplash.com" alt="Йога-мат" />
-            </div>
-            <div class="product-card__body">
-              <h3 class="product-card__title">Коврик для фитнеса и йоги</h3>
-              <p class="product-card__price">1 200 ₽</p>
-              <button class="btn btn--buy">В корзину</button>
-            </div>
-          </article>
-
-          <!-- Карточка товара 4 -->
-          <article class="product-card">
-            <div class="product-card__image">
-              <img src="https://unsplash.com" alt="Скакалка" />
-            </div>
-            <div class="product-card__body">
-              <h3 class="product-card__title">
-                Скакалка скоростная с подшипником
-              </h3>
-              <p class="product-card__price">650 ₽</p>
-              <button class="btn btn--buy">В корзину</button>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Подвал -->
-    <footer class="footer">
-      <div class="container footer__container">
-        <p>&copy; 2026 SportFit. Все права защищены.</p>
-      </div>
-    </footer>
-  </body>
 </html>

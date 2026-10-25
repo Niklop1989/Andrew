@@ -255,3 +255,46 @@ a {
     padding: 50px 0;
   }
 }
+
+/* Контейнер для кнопок */
+.auth-buttons {
+  display: flex;
+  gap: 12px; /* Расстояние между кнопками */
+  font-family: sans-serif;
+}
+
+/* Базовые стили для обеих ссылок-кнопок */
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none; /* Убирает стандартное подчеркивание ссылки */
+  border-radius: 6px; /* Скругление углов */
+  transition: background-color 0.2s ease, color 0.2s ease; /* Плавная анимация */
+}
+
+/* Кнопка "Вход" (акцентная, синяя) */
+.btn-login {
+  background-color: #007bff;
+  color: #ffffff;
+  border: 1px solid #007bff;
+}
+
+.btn-login:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+/* Кнопка "Выход" (второстепенная, контурная) */
+.btn-logout {
+  background-color: transparent;
+  color: #6c757d;
+  border: 1px solid #6c757d;
+}
+
+.btn-logout:hover {
+  background-color: #6c757d;
+  color: #ffffff;
+}
+

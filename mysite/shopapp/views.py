@@ -16,7 +16,7 @@ from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin,
                                         UserPassesTestMixin)
 from .forms import GroupForm,ProductForm,OrderForm
-from .models import Product,Order
+from .models import Product,Order,ProductImage
 
 # Create your views here.
 
@@ -119,7 +119,7 @@ class ProfuctListView(ListView):
 class ProductDetailViews(DetailView):
     template_name = 'shopapp/product-details.html'
     #model = Product
-    queryset = Product.objects.prefetch_related()
+    queryset = Product.objects.prefetch_related('images')
         # не отображаются архивные продукты
     queryset = Product.objects.filter(archived=False)
     context_object_name = 'product'
@@ -190,11 +190,11 @@ from .models import Order
 
 class ProductCreateView(CreateView):
     # проверка может ли пользователь создавать заказ
-    #def test_func(self):
+    def test_func(self):
         #return self.request.user.groups.filter(name='secret-group').exists()
-        #return self.request.user.is_superuser
+        return self.request.user.is_superuser
     model = Product
-    fields = 'name','price','description','discount','category'
+    fields = 'name','price','description','discount','category',"prewiew"
     #form = ProductForm 
     # шаблон должен называться product_form.html
     success_url = reverse_lazy('shopapp:products_list_url')
@@ -221,14 +221,14 @@ class ProductUpdateView(UpdateView):
             kwargs={"pk":self.object.pk},
         )
 
-    #def form_valid(self, form):
-    #    response = super().form_valid(form)
-    #    for image in form.files.getlist('images'):
-    #        ProductImage.objects.create(
-    #           product = self.object,
-    #           image=image
-    #        )
-    #    return response
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        for image in form.files.getlist('images'):
+            ProductImage.objects.create(
+               product = self.object,
+               image=image
+            )
+        return response
 
 #################################################################################
 #Product delete
@@ -251,7 +251,7 @@ class ProductDelateView(DeleteView):
 
 # просмотр деталей заказа не всем пользователям
 class OrderDetailtView(PermissionRequiredMixin,DetailView):
-    permission_required = ['view_order'] # просмотр деталей заказа не всем пользователям
+    permission_required = ['shopapp.view_order'] # просмотр деталей заказа не всем пользователям
     queryset = (
        Order.objects.select_related("user")
         .prefetch_related('products')
@@ -263,15 +263,23 @@ class OrderDetailtView(PermissionRequiredMixin,DetailView):
 #############################################################################
 
 # LoginRequiredMixin просмотреть заказы можно только после login
-class OrderListView(ListView):
-    template_name = 'shopapp/orders-list.html'
-        # отображаются все продукты
-    model = Order
-    queryset = Order.objects.all()
-    context_object_name = 'orders'
+#class OrderListView(LoginRequiredMixin,ListView):
+#    template_name = 'shopapp/orders-list.html'
+#        # отображаются все продукты
+#    model = Order
+#    queryset = Order.objects.all()
+#    context_object_name = 'orders'
+
+#LoginRequiredMixin просмотреть заказы можно только после login
+class OrderListView(LoginRequiredMixin,ListView):
+    queryset = (
+       Order.objects.select_related("user")
+        .prefetch_related('products')
+    )
+    context_object_name = 'orders'    
 
 
-class ProfuctListView(ListView):
+class ProfuctListView(ListView): # LOGIN_URL = reverse_lazy("myauth:login")
     template_name = 'shopapp/products-list.html'
     # отображаются все продукты
     model = Product
@@ -292,7 +300,7 @@ class OrderUpdateView(UpdateView):
     template_name_suffix = '_update_form'
     context_object_name = 'order_upd'
     # success_url = reverse_lazy('shopapp:products_list_url')
-
+    
     # для того чтобы вернутся к продукту нужно сделать get_succsess_url
     def get_success_url(self):
         return reverse(

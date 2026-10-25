@@ -20,6 +20,11 @@ class Category(models.Model):
 
 
 
+def product_prewiew_directory_path(instance:"Product",filename:str)->str:
+    return 'products/product_{pk}/prewiew/{filename}'.format(
+        pk=instance.pk,
+        filename=filename,
+      )
 # Create your models here.
 class Product(models.Model):
 
@@ -52,7 +57,16 @@ class Product(models.Model):
                                                     MaxValueValidator(100)
                                                 ])
     created_at = models.DateTimeField(null=True,auto_now_add=True)
+
+    created_by = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE,      # Удалит продукты, если пользователь будет удален
+        related_name='products' ,
+               null=True       # Позволит получить продукты пользователя: user.products.all()
+    )
     archived = models.BooleanField(default=False)
+
+    prewiew = models.ImageField(null=True,blank=True,upload_to=product_prewiew_directory_path)
 
 
     @property
@@ -75,6 +89,19 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+def product_images_directory_path(instance:'ProductImage',filename:str)->str:
+     return 'products/product_{pk}/images/{filename}'.format(
+        pk=instance.product.pk,
+        filename=filename,
+    )
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='images')
+    image = models.ImageField(upload_to=product_images_directory_path)
+    description = models.TextField(max_length=200,null=False,blank=True)
+
+    
 
 
 class Order(models.Model):
