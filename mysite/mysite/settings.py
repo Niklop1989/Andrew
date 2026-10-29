@@ -9,8 +9,11 @@ https://docs.djangoproject.com/en/6.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
-
+from django.utils.translation import gettext_lazy as _
 from pathlib import Path
+
+from os import getenv
+import logging.config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,6 +44,7 @@ INSTALLED_APPS = [
     "shopapp.apps.ShopappConfig",
     "requestdataapp.apps.RequestdataappConfig",
     "myauth.apps.MyauthConfig",
+    "blogapp.apps.BlogappConfig",
 ]
 
 MIDDLEWARE = [
@@ -158,3 +162,91 @@ LOGIN_REDIRECT_URL = reverse_lazy("myauth:about_me_url")
 
 LOGOUT_REDIRECT_URL = '/login/'
 LOGIN_URL = reverse_lazy("myauth:login")
+
+
+
+# для docker_compose
+
+LOGLEVEL = getenv("DJANGO_LOGLEVEL","info").upper()
+
+
+LOGFILE_NAME = BASE_DIR / 'log.txt'
+LOGFILE_SIZE = 400
+#LOGFILE_SIZE = 1 * 1024 * 1024
+LOGFILE_COUNT = 3
+
+LOGGING = {
+    "version":1,
+    "disable_existing_loggers":False,
+    "formatters": {
+        "verbose":{
+            "format":"%(asctime)s [%(levelname)s] %(name)s %(message)s"
+        }
+    },
+    "handlers":{
+        "console":{
+            "class": "logging.StreamHandler",
+            "formatter":"verbose",
+        },
+        "logfile":{
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename":LOGFILE_NAME,
+            "maxBytes":LOGFILE_SIZE,
+            "backupCount":LOGFILE_COUNT,
+            "formatter":"verbose",
+        },
+    },
+    "root":{
+        "handlers": ['console','logfile'],
+        "level":"INFO"
+    }
+}
+
+
+# LOGGING = {
+#    'version':1,
+#    'filters':{
+#        'requaire_debug_true':{
+#            '()':'django.utils.log.RequireDebugTrue'
+#        },
+#    },
+#    'handlers':{
+#        'console':{
+#            'level':'DEBUG',
+#            'filters':['requaire_debug_true'],
+#            'class':'logging.StreamHandler',
+#        },
+#    },
+#    'loggers':{
+#        'django.db.backends':{
+#            'level':'DEBUG',
+#            'handlers':['console'],
+#        }
+#    },
+#}
+
+
+# для docker-compose
+logging.config.dictConfig({
+    'version':1,
+    "disable_existing_loggers":False,
+    "formatters":{
+        'console':{
+            "format":"%(asctime)s %(levelname)s %(name)s %(lineno)s %(module)s %(massage)s"
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "console",
+        },
+    },
+    "loggers":{
+        "":{
+            "level":LOGLEVEL,
+            "handlers":[
+                "console",
+            ],
+        },
+    },
+})

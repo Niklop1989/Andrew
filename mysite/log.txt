@@ -1,0 +1,2 @@
+2026-10-29 11:59:15,703 [INFO] django.utils.autoreload /home/nikita/страховка/insurency/mysite/blogapp/views.py changed, reloading.
+2026-10-29 11:59:16,041 [INFO] django.utils.autoreload Watching for file changes with StatReloader

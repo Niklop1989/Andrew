@@ -29,7 +29,9 @@ urlpatterns = [
     path('shop/',include('shopapp.urls')),
     path('req/',include('requestdataapp.urls')),
 
-    path('myauth/',include('myauth.urls')),   
+    path('myauth/',include('myauth.urls')),  
+
+    path('blog/',include('blogapp.urls')), 
 ]
 
 

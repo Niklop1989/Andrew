@@ -17,7 +17,7 @@ class Command(BaseCommand):
         with transaction.atomic():
             self.stdout.write('Create order with product')
             user = User.objects.get(username='admin')
-                                                # or defer
+                                                        # or defer
             products:Sequence[Product]=Product.objects.only('id').all()
             order,created = Order.objects.get_or_create(
                 delivery_address='Brynsk',
@@ -29,3 +29,5 @@ class Command(BaseCommand):
             order.save()    
             self.stdout.write(f'Create new order {order}')
         self.stdout.write(self.style.SUCCESS('success create order'))
+
+# python manage.py dumpdata > db.json    python manage.py loaddata db.json
