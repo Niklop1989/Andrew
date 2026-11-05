@@ -40,6 +40,6 @@ services:
     environment:
       - DATABASE_HOST=db
       - DJANGO_ALLOWED_HOSTS=83.217.223.6,127.0.0.1,localhost # На всякий случай явно передаем хосты
-
+      - DJANGO_DEBUG=1
 volumes:
   pgdata:
