@@ -36,7 +36,9 @@ DEBUG = getenv("DJANGO_DEBUG","0") == "1"
 
 
 # для docker
-ALLOWED_HOSTS = ["83.217.223.6", "0.0.0.0", "127.0.0.1", ""]
+# Для docker
+ALLOWED_HOSTS = ["83.217.223.6", "0.0.0.0", "127.0.0.1", "localhost","*"]
+
 
 #ALLOWED_HOSTS = [
 #    "83.217.223.6",
