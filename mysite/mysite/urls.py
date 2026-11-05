@@ -25,8 +25,12 @@ from django.views.generic import RedirectView # Импортируем клас�
 
 from django.contrib.sitemaps.views import sitemap
 
+def favicon(request):
+    return HttpResponse(status=204)
+
 urlpatterns = [
-    path('favicon.ico', lambda request: HttpResponse(status=204)), # 204 означает "No Content"
+    path('favicon.ico', favicon),
+    #path('favicon.ico', lambda request: HttpResponse(status=204)), # 204 означает "No Content"
 
     path('', RedirectView.as_view(url='shop/', permanent=True)), # Перенаправление с главной на /shop/
     
