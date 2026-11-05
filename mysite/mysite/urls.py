@@ -29,7 +29,10 @@ def favicon(request):
     return HttpResponse(status=204)
 
 urlpatterns = [
-    path('favicon.ico', favicon),
+    path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico', permanent=True)),
+
+
+    #path('favicon.ico', favicon),
     #path('favicon.ico', lambda request: HttpResponse(status=204)), # 204 означает "No Content"
 
     path('', RedirectView.as_view(url='shop/', permanent=True)), # Перенаправление с главной на /shop/
