@@ -26,9 +26,38 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-hhj%ft)z8isz0%8^%j&wfqg!rd8t%e)m80q0%3_fkhf5v2tu^w"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
 
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = []
+#DEBUG = True
+# для env.template
+DEBUG = getenv("DJANGO_DEBUG","0") == "1"
+
+
+
+# для docker
+ALLOWED_HOSTS = [
+    "83.217.223.6",
+    "0.0.0.0",
+    '127.0.0.1'
+] + getenv("DJANGO_ALLOWED_HOSTS","").split(",")
+
+
+# для профелирования
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+# для docker
+if DEBUG:
+    import socket
+    hostname, _,ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS.append("10.0.2.2")
+    INTERNAL_IPS.extend(
+        [ip[: ip.rfind(".")] + ".1" for ip in ips])
+
+
+
 
 
 # Application definition
@@ -49,6 +78,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -96,7 +126,7 @@ DATABASES = {
         'NAME': 'insure',
         'USER': 'insure',
         'PASSWORD': 'insure',
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
@@ -137,13 +167,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = "static/"
-
+import os
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+#STATICFILES_DIRS = [
+ #   os.path.join(BASE_DIR, 'static'),
+#]
 
 # Папка, куда команда collectstatic будет собирать всю статику для продакшена:
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'uploads'
 

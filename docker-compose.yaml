@@ -1,0 +1,50 @@
+version: "3.9"
+# sudo systemctl stop postgresql
+services:
+  db:
+    image: postgres:15-alpine # Можно заменить на нужную вам версию
+    restart: always
+    environment:
+      POSTGRES_DB: insure     # Имя вашей базы данных
+      POSTGRES_USER: insure       # Имя пользователя
+      POSTGRES_PASSWORD: insure # Пароль
+    ports:
+      - "5433:5432" # Проброс порта наружу (чтобы подключаться с компьютера)
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: . # Указывает, где искать Dockerfile
+      dockerfile: ./Dockerfile
+    command:
+      - "python"
+      - "manage.py"
+      - "runserver"
+      - "0.0.0.0:8080"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./mysite:/app # Монтирует текущую папку с проектом в папку /app внутри контейнера
+        
+    depends_on:
+      - db # Заставляет app дождаться запуска контейнера с БД
+    environment:
+      - DATABASE_HOST=db # ВАЖНО: имя хоста должно совпадать с именем сервиса БД
+volumes:
+  pgdata:
+
+# Команда sudo systemctl stop postgresql останавливает службу PostgreSQL в системах на базе Linux 
+#• docker compose exec app python manage.py migrate — запускает стандартный механизм Django для создания таблиц в PostgreSQL.  
+# docker compose exec app python manage.py createsuperuser
+# docker compose exec app python manage.py collectstatic --noinput для статики
+# 1. Останавливаем и удаляем старые контейнеры
+#docker compose down
+
+# 2. Запускаем заново
+#docker compose up -d
+
+# 3. Принудительно собираем статику заново в общую папку
+#docker compose exec app python manage.py collectstatic --noinput
+
+# http://127.0.0.1:8080/admin/

@@ -19,12 +19,19 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path,include
-
+from django.http import HttpResponse,HttpRequest,HttpResponseRedirect
 from django.conf.urls.i18n import i18n_patterns
+from django.views.generic import RedirectView # Импортируем класс для редиректа
 
 from django.contrib.sitemaps.views import sitemap
 
 urlpatterns = [
+    path('favicon.ico', lambda request: HttpResponse(status=204)), # 204 означает "No Content"
+
+    path('', RedirectView.as_view(url='shop/', permanent=True)), # Перенаправление с главной на /shop/
+    
+
+
     path("admin/", admin.site.urls),
     path('shop/',include('shopapp.urls')),
     path('req/',include('requestdataapp.urls')),
