@@ -28,6 +28,7 @@ from django.contrib.sitemaps.views import sitemap
 def favicon(request):
     return HttpResponse(status=204)
 
+
 urlpatterns = [
     path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico', permanent=True)),
 
