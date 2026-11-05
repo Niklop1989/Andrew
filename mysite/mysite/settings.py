@@ -36,11 +36,13 @@ DEBUG = getenv("DJANGO_DEBUG","0") == "1"
 
 
 # для docker
-ALLOWED_HOSTS = [
-    "83.217.223.6",
-    "0.0.0.0",
-    '127.0.0.1'
-] + getenv("DJANGO_ALLOWED_HOSTS","").split(",")
+ALLOWED_HOSTS = ["83.217.223.6", "0.0.0.0", "127.0.0.1", ""]
+
+#ALLOWED_HOSTS = [
+#    "83.217.223.6",
+#    "0.0.0.0",
+#    '127.0.0.1'
+#] + getenv("DJANGO_ALLOWED_HOSTS","").split(",")
 
 
 # для профелирования
@@ -178,6 +180,15 @@ STATICFILES_DIRS = [
 # Папка, куда команда collectstatic будет собирать всю статику для продакшена:
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Опционально: включите сжатие и кэширование статики
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'uploads'
 
