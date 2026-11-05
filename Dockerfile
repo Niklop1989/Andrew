@@ -39,11 +39,21 @@ COPY requirements.txt requirements.txt
 
 RUN pip install --upgrade pip
 RUN pip install -r /app/requirements.txt
-# RUN python manage.py collectstatic
-
 
 COPY mysite .
-CMD ["python", "manage.py", "runserver","0.0.0.0:8080"]
+
+# Обязательно собираем статику перед запуском
+RUN python manage.py collectstatic --noinput
+
+# Запускаем через промышленный сервер Gunicorn (вместо mysite.wsgi укажите имя вашей папки с settings.py)
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8080"]
+
+
+
+
+# RUN python manage.py collectstatic
+#COPY mysite .
+#CMD ["python", "manage.py", "runserver","0.0.0.0:8080"]
 #CMD ["python", "manage.py", "runserver"]
 #CMD ["gunicorn","mysite.wsgi:application","--bind","0.0.0.0:8080"]
 

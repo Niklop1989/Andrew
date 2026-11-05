@@ -1,50 +1,45 @@
 version: "3.9"
-# sudo systemctl stop postgresql
+
 services:
   db:
-    image: postgres:15-alpine # Можно заменить на нужную вам версию
+    image: postgres:15-alpine
     restart: always
     environment:
-      POSTGRES_DB: insure     # Имя вашей базы данных
-      POSTGRES_USER: insure       # Имя пользователя
-      POSTGRES_PASSWORD: insure # Пароль
+      POSTGRES_DB: insure
+      POSTGRES_USER: insure
+      POSTGRES_PASSWORD: insure
     ports:
-      - "5433:5432" # Проброс порта наружу (чтобы подключаться с компьютера)
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    # Хелсчек, чтобы Django знал, когда база РЕАЛЬНО готова принимать подключения
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U insure -d insure"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   app:
     build:
-      context: . # Указывает, где искать Dockerfile
+      context: .
       dockerfile: ./Dockerfile
+    # Исправлено: Добавлен флаг --insecure для работы статики при DEBUG=False
     command:
       - "python"
       - "manage.py"
       - "runserver"
       - "0.0.0.0:8080"
+      - "--insecure" 
     ports:
       - "8080:8080"
     volumes:
-      - ./mysite:/app # Монтирует текущую папку с проектом в папку /app внутри контейнера
-        
+      - ./mysite:/app
     depends_on:
-      - db # Заставляет app дождаться запуска контейнера с БД
+      db:
+        condition: service_healthy # Ждем полной готовности Postgres
     environment:
-      - DATABASE_HOST=db # ВАЖНО: имя хоста должно совпадать с именем сервиса БД
+      - DATABASE_HOST=db
+      - DJANGO_ALLOWED_HOSTS=83.217.223.6,127.0.0.1,localhost # На всякий случай явно передаем хосты
+
 volumes:
   pgdata:
-
-# Команда sudo systemctl stop postgresql останавливает службу PostgreSQL в системах на базе Linux 
-#• docker compose exec app python manage.py migrate — запускает стандартный механизм Django для создания таблиц в PostgreSQL.  
-# docker compose exec app python manage.py createsuperuser
-# docker compose exec app python manage.py collectstatic --noinput для статики
-# 1. Останавливаем и удаляем старые контейнеры
-#docker compose down
-
-# 2. Запускаем заново
-#docker compose up -d
-
-# 3. Принудительно собираем статику заново в общую папку
-#docker compose exec app python manage.py collectstatic --noinput
-
-# http://127.0.0.1:8080/admin/
