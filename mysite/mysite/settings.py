@@ -135,7 +135,7 @@ DATABASES = {
         'NAME': 'insure',
         'USER': 'insure',
         'PASSWORD': 'insure',
-        'HOST': 'localhost', # для деплоя пишем сюда db
+        'HOST': 'db', # для деплоя пишем сюда db
         'PORT': '5432',
     }
 }
