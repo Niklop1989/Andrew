@@ -37,7 +37,7 @@ DEBUG = getenv("DJANGO_DEBUG","0") == "1"
 
 # для docker
 # Для docker
-ALLOWED_HOSTS = ["83.217.223.6", "0.0.0.0", "127.0.0.1", "localhost","*"]
+ALLOWED_HOSTS = ["83.217.223.6", "0.0.0.0", "127.0.0.1", "localhost","insure","*"]
 
 
 #ALLOWED_HOSTS = [
@@ -81,6 +81,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "django.middleware.cache.UpdateCacheMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -92,6 +93,10 @@ MIDDLEWARE = [
 
     "requestdataapp.middlewares.set_useragent_on_request_middleware",
     "requestdataapp.middlewares.CountRequestMiddlewarw",
+
+    "django.middleware.cache.FetchFromCacheMiddleware",
+
+
 ]
 
 ROOT_URLCONF = "mysite.urls"
@@ -130,10 +135,21 @@ DATABASES = {
         'NAME': 'insure',
         'USER': 'insure',
         'PASSWORD': 'insure',
-        'HOST': 'db',
+        'HOST': 'localhost', # для деплоя пишем сюда db
         'PORT': '5432',
     }
 }
+
+CACHES = {
+    'default': {
+        #"BACKEND": "django.core.cache.backends.dummy.DummyCache",
+        # лучше нижнее
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": "/var/tmp/django_cache",
+       # "LOCAtion": "c:/foo/bar",
+    },
+}
+CACHE_MIDDLWARE_SECONDS = 200 # секунд
 
 
 # Password validation
@@ -183,12 +199,24 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Опционально: включите сжатие и кэширование статики
+# Опционально: включите сжатие и кэширование статики для диплоя используем
 STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+#STORAGES = {
+#    # Конфигурация для обычных медиа-файлов (пользовательских загрузок)
+#    "default": {
+#        "BACKEND": "django.core.files.storage.FileSystemStorage",
+#    },
+#    # Конфигурация для статических файлов (css, js и т.д.)
+#    "staticfiles": {
+#        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+#    },
+#}
+
 
 
 MEDIA_URL = '/media/'

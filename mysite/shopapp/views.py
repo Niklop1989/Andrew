@@ -80,7 +80,9 @@ class GroupsListView(View):
 #        context['products1'] = Product.objects.all()
 #        return context
 
-
+from django.views.decorators.cache import cache_page
+# для чтения cookie
+@cache_page(60*2)
 class ProfuctListView(ListView):
     template_name = 'shopapp/products-list.html'
     # отображаются все продукты
@@ -233,6 +235,7 @@ class ProductUpdateView(UpdateView):
 #################################################################################
 #Product delete
 ##################################################################################
+
 class ProductDelateView(DeleteView):
     # для удаления
     model = Product
@@ -250,6 +253,7 @@ class ProductDelateView(DeleteView):
 # ##################################################################################
 
 # просмотр деталей заказа не всем пользователям
+
 class OrderDetailtView(PermissionRequiredMixin,DetailView):
     permission_required = ['shopapp.view_order'] # просмотр деталей заказа не всем пользователям
     queryset = (
@@ -271,6 +275,7 @@ class OrderDetailtView(PermissionRequiredMixin,DetailView):
 #    context_object_name = 'orders'
 
 #LoginRequiredMixin просмотреть заказы можно только после login
+
 class OrderListView(LoginRequiredMixin,ListView):
     queryset = (
        Order.objects.select_related("user")
@@ -336,4 +341,26 @@ def create_order(request:HttpRequest) -> HttpResponse:
     }
    
     return render(request,'shopapp/create-order.html',context=context)
-    
+
+
+
+from django.http import JsonResponse
+from django.core.cache import cache
+class ProductDataExportView(View):
+
+    def get(self, request:HttpRequest) -> HttpResponse:
+        cache_key = "products_data_export"
+        products_data = cache.get(cache_key)
+        if products_data is None:
+            products = Product.objects.order_by('pk').all()
+            products_data = [
+                {
+                    "pk":product.pk,
+                    'name':product.name,
+                    'price':product.price,
+                }
+                for product in products
+            ]
+        cache.set(cache_key,products_data,10)
+        return JsonResponse({'products':products_data})
+

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from random import random
 
 # Create your views here.
 from django.shortcuts import render,redirect

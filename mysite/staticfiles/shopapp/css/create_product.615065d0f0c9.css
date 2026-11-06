@@ -1,0 +1,172 @@
+/* Основной контейнер */
+.product-create-container {
+    max-width: 650px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #2c3e50;
+}
+
+.product-create-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+    text-align: center;
+    color: #1a252f;
+}
+
+/* Карточка формы */
+.product-create-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1.2rem;
+}
+
+/* Стилизация полей формы Django через .form-fields p */
+.form-fields p {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-fields label {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+}
+
+.form-fields input[type="text"],
+.form-fields input[type="number"],
+.form-fields input[type="email"],
+.form-fields textarea,
+.form-fields select {
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    border: 1px. solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-fields input:focus,
+.form-fields textarea:focus,
+.form-fields select:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+/* Кнопки */
+.btn {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-submit {
+    width: 100%;
+    background-color: #2ecc71;
+    color: #ffffff;
+    margin-top: 0.5rem;
+}
+
+.btn-submit:hover {
+    background-color: #27ae60;
+}
+
+.product-actions {
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.btn-secondary {
+    background-color: #ecf0f1;
+    color: #34495e;
+}
+
+.btn-secondary:hover {
+    background-color: #bdc3c7;
+}
+
+/* Блок предыдущих данных */
+.previous-data-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.previous-data-card h2 {
+    font-size: 1.3rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #34495e;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table tr {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.data-table tr:last-child {
+    border-bottom: none;
+}
+
+.data-table th,
+.data-table td {
+    padding: 0.75rem 0.5rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+.data-table th {
+    width: 35%;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 480px) {
+    .product-create-container {
+        margin: 1rem 0.5rem;
+        padding: 0.75rem;
+    }
+
+    .product-create-card,
+    .previous-data-card {
+        padding: 1rem;
+    }
+
+    .data-table th,
+    .data-table td {
+        display: block;
+        width: 100%;
+        padding: 0.25rem 0;
+    }
+
+    .data-table tr {
+        display: block;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .data-table th {
+        color: #7f8c8d;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+    }
+}

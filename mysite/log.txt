@@ -1,1 +1,2 @@
-2026-11-05 10:30:57,254 [INFO] django.utils.autoreload Watching for file changes with StatReloader
+2026-11-06 11:26:48,114 [INFO] django.utils.autoreload Watching for file changes with StatReloader
+2026-11-06 11:31:23,001 [WARNING] django.request Not Found: /shop/products/latest/feed/

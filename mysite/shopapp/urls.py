@@ -4,14 +4,16 @@ from .views import (shop_index,GroupsListView,ProfuctListView,
                     OrderListView,create_product,create_order,ShopIndexView,
                     ProductDetailViews,OrderDetailtView,ProductCreateView,
                     ProductUpdateView,ProductDelateView,OrderCreateView,
-                    OrdertDelateView,OrderUpdateView)
-
+                    OrdertDelateView,OrderUpdateView,ProductDataExportView)
+from django.views.decorators.cache import cache_page # без midlleware
 
 app_name = 'shopapp'
 
 urlpatterns = [
-    path('',ShopIndexView.as_view(),name='index'),
+    path('',cache_page(60 * 2)(ShopIndexView.as_view()),name='index'),
     path("groups/",GroupsListView.as_view(),name='groups_list'),
+    path("export/", ProductDataExportView.as_view(), name="export"),
+
     path('products/',ProfuctListView.as_view(),name='products_list_url'),
     path('products/create/',ProductCreateView.as_view(),name='product_create_url'),
     path('products/<int:pk>',ProductDetailViews.as_view(),name='product_details_url'),
